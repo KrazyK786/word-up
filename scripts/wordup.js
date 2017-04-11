@@ -54,6 +54,15 @@ function addNewWordSubmission(word) {
     // TODO 21
     // replace the hardcoded 'false' with the real answer
     var alreadyUsed = false;
+    model.wordSubmissions.forEach(dup);
+
+    function dup(current_word,index){
+        if (current_word.word == word){
+            alreadyUsed = true;
+        }
+
+    }
+
     console.log(word);
 
     // if the word is valid and hasn't already been used, add it
@@ -233,15 +242,27 @@ function wordSubmissionChip(wordSubmission) {
 
     // if we know the status of this word (real word or not), then add a green score or red X
     if (wordSubmission.hasOwnProperty("isRealWord")) {
-        var scoreChip = $("<span></span>").text("⟐");
-        // TODO 17
+        var scoreChip = $("<span></span>"); //.text("⟐");
+        // TODO 17 -DONE
         // give the scoreChip appropriate text content
+        if (wordSubmission.isRealWord == true){
+            scoreChip
+            .text(wordScore(wordSubmission.word))
+            .attr("class", "tag tag-sm tag-primary");
+        }
+        else{
+            scoreChip
+            .text("X")
+            .attr("class", "tag tag-sm tag-danger");
+        }
 
         // TODO 18
         // give the scoreChip appropriate css classes
 
-        // TODO 16
+
+        // TODO 16 -DONE
         // append scoreChip into wordChip
+        wordChip.append(scoreChip);
 
     }
 
@@ -377,10 +398,10 @@ function wordScore(word) {
     // split the word into a list of letters
     var letters = word.split("");
 
-    // TODO 19
+    // TODO 19 -DONE
     // Replace the empty list below.
     // Map the list of letters into a list of scores, one for each letter.
-    var letterScores = [];
+    var letterScores = letters.map(letterScore);
 
     // return the total sum of the letter scores
     return letterScores.reduce(add, 0);
@@ -402,9 +423,20 @@ function currentScore() {
         }
     });
 
-    // TODO 20
+    // TODO 20 -DONE
     // return the total sum of the word scores
-    return 0;
+    function findSum(total, score){
+        return total + score; 
+    }
+    if (wordScores.length > 1 ){
+        return wordScores.reduce(findSum);
+
+    }
+    else{
+        return wordScores.reduce(findSum, 0);
+    }
+
+    // return wordScores;
 }
 
 
